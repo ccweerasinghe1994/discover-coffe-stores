@@ -1,0 +1,29 @@
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+  Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  color: #373b64;
+}
+
+.heading-primary {
+  font-size: 6rem;
+  text-transform: capitalize;
+  display: flex;
+  flex-wrap: wrap;
+
+  &--main {
+    color: $text-white;
+    margin-right: 2rem;
+  }
+
+  &--sub {
+    color: $primary-title-color;
+  }
+}
+
+.heading-secondary {
+  margin-top: 0.75rem;
+  font-size: 1.5rem;
+  line-height: 2rem;
+  color: $text-white;
+}

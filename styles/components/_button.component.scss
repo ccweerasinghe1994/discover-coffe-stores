@@ -1,0 +1,16 @@
+.button {
+    background-color: $text-purple;
+    cursor: pointer;
+    color: white;
+    outline: 0;
+    border: 0;
+
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+    padding: 1rem 2rem;
+
+    &:hover {
+        background-color: $text-purple-dark;
+    }
+
+}
