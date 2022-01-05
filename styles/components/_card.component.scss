@@ -1,0 +1,12 @@
+.card-link{
+  margin: auto;
+}
+
+.card{
+  &__image{
+    &--wrapper{
+      padding: 2rem;
+
+    }
+  }
+}

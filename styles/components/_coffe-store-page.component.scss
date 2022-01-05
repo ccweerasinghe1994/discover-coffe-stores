@@ -1,0 +1,54 @@
+
+.coffee-store-page{
+
+  padding-top: 2rem;
+  padding-left: 2rem;
+  &__link-wrapper{
+    font-size: 1.6rem;
+    color: $text-purple-dark;
+    text-transform: capitalize;
+    font-weight: bold;
+
+  }
+  &__layout{
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: repeat(1,minmax(0,1fr));
+  }
+  &__image{
+    border-radius: 1rem;
+  }
+  &__card{
+    padding: 3rem;
+    height: fit-content;
+    width: fit-content;
+    &-text{
+      display: flex;
+      align-items: center;
+      font-size: 1.6rem;
+    }
+    &-icon{
+      display: flex;
+      align-items: center;
+    }
+
+  }
+}
+
+@media(min-width: 640px) {
+  .coffee-store-page__layout {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+//
+//@media(min-width: 768px) {
+//  .coffee-store-page__layout {
+//    grid-template-columns: repeat(2, minmax(0, 1fr));
+//  }
+//}
+//
+//@media(min-width: 1024px) {
+//  .coffee-store-page__layout {
+//    grid-template-columns: repeat(3, minmax(0, 1fr));
+//  }
+//}
