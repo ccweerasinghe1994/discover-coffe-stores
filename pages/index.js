@@ -3,28 +3,31 @@ import Image from "next/image";
 import Banner from "../components/banner.component";
 import Card from "../components/card/card.component";
 import {fetchCoffeeStores} from "../lib/coffee-store";
-import userTrackLocation from '../hooks/user-track-location.hooks';
-import {useEffect, useState} from "react";
+import useTrackLocation from '../hooks/user-track-location.hooks';
+import {useContext, useEffect, useState} from "react";
+import {ACTION_TYPES, StoreContext} from "../store/store-context";
 
 
 export async function getStaticProps(context) {
-    const coffeeStoresData = await fetchCoffeeStores();
+    const coffeeStores = await fetchCoffeeStores();
+
 
     return {
         props: {
-            coffeeStores: coffeeStoresData
+            coffeeStores
         }
     }
 
 }
 
 export default function Home({coffeeStores}) {
+    const {dispatch,state} = useContext(StoreContext);
+    const {latLong,coffeeStoresFromContext}  = state;
     const [coffeeStoresFromState, setCoffeeStores] = useState("");
     const [coffeeStoresError, setCoffeeStoresError] = useState(null);
 
-    const {locationErrorMessage, handleTrackLocation, latLong, isFindingLocation} = userTrackLocation();
+    const {locationErrorMessage, handleTrackLocation, isFindingLocation} = useTrackLocation();
     const handleOnBannerButtonClick = () => {
-        console.log("Banner Button Clicked");
         handleTrackLocation();
     };
     useEffect(async () => {
@@ -32,7 +35,12 @@ export default function Home({coffeeStores}) {
         if (latLong) {
             try {
                 const data = await fetchCoffeeStores(latLong, 12);
-                setCoffeeStores(data);
+                console.log("data",data)
+                // setCoffeeStores(data);
+                dispatch({
+                    type:ACTION_TYPES.SET_COFFEE_STORES,
+                    payload:data
+                })
             } catch (error) {
                setCoffeeStoresError(error.message)
             }
@@ -62,27 +70,14 @@ export default function Home({coffeeStores}) {
                 <div className="hero-image">
                     <Image src={"/static/coffee.png"} width={512} height={512} alt={"hero image"}/>
                 </div>
-                <h2 className="heading-secondary">Colombo Coffee Shops</h2>
-                <div className="card-layout m-t-4 ">
-                    {
-                        coffeeStores.map(
-                            ({id, name, imageUrl}) => (
-                                <Card key={id} name={name} href={`/coffee-store/${id}`}
-                                      imageUrl={imageUrl}/>
-                            )
-                        )
-                    }
-
-
-                </div>
                 {
-                    coffeeStoresFromState.length>0 &&(
-                        <div className={"m-t-8"} >
+                    coffeeStoresFromContext.length>0 &&(
+                        <div className={"m-t-4"} >
                             <h2 className="heading-secondary ">Coffee Shops near you</h2>
                             <div className="card-layout m-t-4 ">
                                 {
 
-                                    coffeeStoresFromState.map(
+                                    coffeeStoresFromContext.map(
                                         ({id, name, imageUrl}) => (
                                             <Card key={id} name={name} href={`/coffee-store/${id}`}
                                                   imageUrl={imageUrl}/>
@@ -95,6 +90,20 @@ export default function Home({coffeeStores}) {
                         </div>
                     )
                 }
+                <h2 className="heading-secondary">Colombo 7 Coffee Shops</h2>
+                <div className="card-layout m-t-4 ">
+                    {
+                        coffeeStores.map(
+                            ({id, name, imageUrl}) => (
+                                <Card key={id} name={name} href={`/coffee-store/${id}`}
+                                      imageUrl={imageUrl}/>
+                            )
+                        )
+                    }
+
+
+                </div>
+
 
             </main>
         </div>

@@ -1,6 +1,5 @@
 import {useRouter} from "next/router";
 import Link from "next/link";
-// import coffeeStoresData from '../../data/coffe-stores.json';
 import Image from 'next/image';
 import {fetchCoffeeStores} from "../../lib/coffee-store";
 
@@ -10,6 +9,7 @@ export async function getStaticProps(staticProps) {
     const findCoffeeStoreById = coffeeStoresData.find(coffeeStore => {
         return coffeeStore.id.toString() === params.id
     })
+    console.log("findCoffeeStoreById",findCoffeeStoreById)
     return {
         props: {
             coffeeStore: findCoffeeStoreById?findCoffeeStoreById:{}
@@ -40,7 +40,7 @@ const Id = (props) => {
     const handleVote = () => {
         console.log("handle Vote")
     }
-    const {name, address, neighbourhood, imageUrl} = props.coffeeStore;
+    const {name, locality, cross_street, imageUrl} = props.coffeeStore;
     return (
         <div className={"coffee-store-page"}>
             <div className={"coffee-store-page__link-wrapper"}>
@@ -59,7 +59,7 @@ const Id = (props) => {
                     <div className={"flex-start m-t-1"}>
                         <div className={"m-l-1"}><Image alt={"icon"} src={"/static/icons/location.png"} height={24}
                                                         width={24}/></div>
-                        <div className={"coffee-store-page__card-text m-l-1"}> {address}</div>
+                        <div className={"coffee-store-page__card-text m-l-1"}> {locality}</div>
                     </div>
                     <div className={"flex-start m-t-1"}>
                         <div className={"coffee-store-page__card-icon m-l-1"}><Image alt={"icon"}
@@ -67,7 +67,7 @@ const Id = (props) => {
                                                                                      height={24}
                                                                                      width={24}/>
                         </div>
-                        <div className={"coffee-store-page__card-text m-l-1"}> {neighbourhood}</div>
+                        <div className={"coffee-store-page__card-text m-l-1"}> {cross_street}</div>
                     </div>
                     <p>1</p>
 
