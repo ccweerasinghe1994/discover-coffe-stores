@@ -49,7 +49,7 @@ export default function Home({coffeeStores}) {
         }
 
 
-    }, [latLong])
+    }, [dispatch,latLong])
     return (
         <div className="home-page">
             <Head>
