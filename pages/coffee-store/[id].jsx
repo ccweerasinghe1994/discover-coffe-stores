@@ -39,18 +39,16 @@ export async function getStaticPaths() {
 const CoffeeStore = (initialProps) => {
 
     const router = useRouter();
-    if (router.isFallback) {
-        return <div>Loading...</div>
-    }
+
     const id = router.query.id;
-    // eslint-disable-next-line react-hooks/rules-of-hooks
+
     const [coffeeStore, setCoffeeStore] = useState(initialProps.coffeeStore);
 
-    // eslint-disable-next-line react-hooks/rules-of-hooks
+
     const {state} = useContext(StoreContext);
     const {coffeeStoresFromContext} = state;
 
-    // eslint-disable-next-line react-hooks/rules-of-hooks
+
     useEffect(() => {
 
         if (isEmpty(initialProps.coffeeStore)) {
@@ -75,41 +73,42 @@ const CoffeeStore = (initialProps) => {
 
 
     const {name, locality, cross_street, imageUrl} = coffeeStore;
+    console.log(coffeeStore)
     return (
-        <div className={"coffee-store-page"}>
-            <div className={"coffee-store-page__link-wrapper"}>
-                <Link href="/">
-                    <a>&larr;{" "}back to home</a>
-                </Link>
-            </div>
-            <h2 className={"heading-secondary m-t-1 m-b-2"}>{name}</h2>
-            <div className={"coffee-store-page__layout m-t-1"}>
+     router.isFallback?<div>Lording</div>:(   <div className={"coffee-store-page"}>
+         <div className={"coffee-store-page__link-wrapper"}>
+             <Link href="/">
+                 <a>&larr;{" "}back to home</a>
+             </Link>
+         </div>
+         <h2 className={"heading-secondary m-t-1 m-b-2"}>{name}</h2>
+         <div className={"coffee-store-page__layout m-t-1"}>
 
-                <Image className={"coffee-store-page__image"} layout={"responsive"} alt={name} src={"https://images.unsplash.com/photo-1518832553480-cd0e625ed3e6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"}
-                       width={600}
-                       height={360}/>
+             <Image className={"coffee-store-page__image"} layout={"responsive"} alt={name} src={imageUrl||"https://images.unsplash.com/photo-1504753793650-d4a2b783c15e?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2000&q=80"}
+                    width={600}
+                    height={360}/>
 
-                <div className={"coffee-store-page__card glass"}>
-                    <div className={"flex-start m-t-1"}>
-                        <div className={"m-l-1"}><Image alt={"icon"} src={"/static/icons/location.png"} height={24}
-                                                        width={24}/></div>
-                        <div className={"coffee-store-page__card-text m-l-1"}> {locality}</div>
-                    </div>
-                    <div className={"flex-start m-t-1"}>
-                        <div className={"coffee-store-page__card-icon m-l-1"}><Image alt={"icon"}
-                                                                                     src={"/static/icons/favorites.png"}
-                                                                                     height={24}
-                                                                                     width={24}/>
-                        </div>
-                        <div className={"coffee-store-page__card-text m-l-1"}> {cross_street}</div>
-                    </div>
-                    <p>1</p>
+             <div className={"coffee-store-page__card glass"}>
+                 <div className={"flex-start m-t-1"}>
+                     <div className={"m-l-1"}><Image alt={"icon"} src={"/static/icons/location.png"} height={24}
+                                                     width={24}/></div>
+                     <div className={"coffee-store-page__card-text m-l-1"}> {locality}</div>
+                 </div>
+                 <div className={"flex-start m-t-1"}>
+                     <div className={"coffee-store-page__card-icon m-l-1"}><Image alt={"icon"}
+                                                                                  src={"/static/icons/favorites.png"}
+                                                                                  height={24}
+                                                                                  width={24}/>
+                     </div>
+                     <div className={"coffee-store-page__card-text m-l-1"}> {cross_street}</div>
+                 </div>
+                 <p>1</p>
 
-                    <button onClick={handleVote} className={"button m-t-2 m-l-1"}>Up Vote!</button>
-                </div>
-            </div>
+                 <button onClick={handleVote} className={"button m-t-2 m-l-1"}>Up Vote!</button>
+             </div>
+         </div>
 
-        </div>
+     </div>)
     )
 
 }
