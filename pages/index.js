@@ -34,9 +34,11 @@ export default function Home({coffeeStores}) {
 
         if (latLong) {
             try {
-                const data = await fetchCoffeeStores(latLong, 12);
-                console.log("data",data)
-                // setCoffeeStores(data);
+
+                const limit = 12;
+                const response = await fetch(`/api/getCoffeeStoresByLocation?latLong=${latLong}&limit=${limit}`);
+                const data = await response.json();
+
                 dispatch({
                     type:ACTION_TYPES.SET_COFFEE_STORES,
                     payload:data
