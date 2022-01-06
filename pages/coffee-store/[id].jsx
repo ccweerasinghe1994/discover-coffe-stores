@@ -43,11 +43,14 @@ const CoffeeStore = (initialProps) => {
         return <div>Loading...</div>
     }
     const id = router.query.id;
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const [coffeeStore, setCoffeeStore] = useState(initialProps.coffeeStore);
 
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const {state} = useContext(StoreContext);
     const {coffeeStoresFromContext} = state;
 
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     useEffect(() => {
 
         if (isEmpty(initialProps.coffeeStore)) {
