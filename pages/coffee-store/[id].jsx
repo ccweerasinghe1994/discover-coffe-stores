@@ -2,17 +2,21 @@ import {useRouter} from "next/router";
 import Link from "next/link";
 import Image from 'next/image';
 import {fetchCoffeeStores} from "../../lib/coffee-store";
+import {useContext, useEffect, useState} from "react";
+import {StoreContext} from "../../store/store-context";
+import {isEmpty} from "../../utils";
 
 export async function getStaticProps(staticProps) {
     const params = staticProps.params;
+    console.log("params.id: ", params.id)
     const coffeeStoresData = await fetchCoffeeStores();
     const findCoffeeStoreById = coffeeStoresData.find(coffeeStore => {
         return coffeeStore.id.toString() === params.id
     })
-    console.log("findCoffeeStoreById",findCoffeeStoreById)
+
     return {
         props: {
-            coffeeStore: findCoffeeStoreById?findCoffeeStoreById:{}
+            coffeeStore: findCoffeeStoreById ? findCoffeeStoreById : {},
         }
     }
 }
@@ -32,15 +36,42 @@ export async function getStaticPaths() {
     }
 }
 
-const Id = (props) => {
+const CoffeeStore = (initialProps) => {
+
     const router = useRouter();
     if (router.isFallback) {
         return <div>Loading...</div>
     }
+    const id = router.query.id;
+    const [coffeeStore, setCoffeeStore] = useState(initialProps.coffeeStore);
+
+    const {state} = useContext(StoreContext);
+    const {coffeeStoresFromContext} = state;
+
+    useEffect(() => {
+
+        if (isEmpty(initialProps.coffeeStore)) {
+
+            if (coffeeStoresFromContext.length > 0) {
+                console.log("coffeeStoresFromContext.length > 0")
+                const findCoffeeStoreById = coffeeStoresFromContext.find(
+                    (coffeeStore) => {
+                        return coffeeStore.id.toString() === id.toString();
+                    }
+                )
+                    setCoffeeStore(findCoffeeStoreById)
+            }
+        }
+    }, [id]);
+
+
+
     const handleVote = () => {
         console.log("handle Vote")
     }
-    const {name, locality, cross_street, imageUrl} = props.coffeeStore;
+
+
+    const {name, locality, cross_street, imageUrl} = coffeeStore;
     return (
         <div className={"coffee-store-page"}>
             <div className={"coffee-store-page__link-wrapper"}>
@@ -51,7 +82,7 @@ const Id = (props) => {
             <h2 className={"heading-secondary m-t-1 m-b-2"}>{name}</h2>
             <div className={"coffee-store-page__layout m-t-1"}>
 
-                <Image className={"coffee-store-page__image"} layout={"responsive"} alt={name} src={imageUrl}
+                <Image className={"coffee-store-page__image"} layout={"responsive"} alt={name} src={"https://images.unsplash.com/photo-1518832553480-cd0e625ed3e6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"}
                        width={600}
                        height={360}/>
 
@@ -81,4 +112,4 @@ const Id = (props) => {
 }
 
 
-export default Id;
+export default CoffeeStore;
