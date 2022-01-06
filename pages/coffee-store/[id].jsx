@@ -105,7 +105,7 @@ const CoffeeStore = (initialProps) => {
                     </div>
                     <p>1</p>
 
-                    <button onClick={handleVote} className={"button m-t-2 m-l-1"}>Up Vote !</button>
+                    <button onClick={handleVote} className={"button m-t-2 m-l-1"}>Up Vote!</button>
                 </div>
             </div>
 
