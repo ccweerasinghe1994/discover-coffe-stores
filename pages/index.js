@@ -21,8 +21,8 @@ export async function getStaticProps(context) {
 }
 
 export default function Home({coffeeStores}) {
-    const {dispatch,state} = useContext(StoreContext);
-    const {latLong,coffeeStoresFromContext}  = state;
+    const {dispatch, state} = useContext(StoreContext);
+    const {latLong, coffeeStoresFromContext} = state;
     const [coffeeStoresFromState, setCoffeeStores] = useState("");
     const [coffeeStoresError, setCoffeeStoresError] = useState(null);
 
@@ -30,26 +30,28 @@ export default function Home({coffeeStores}) {
     const handleOnBannerButtonClick = () => {
         handleTrackLocation();
     };
-    useEffect(async () => {
-
+    const fetchDateAfterLocationChange = async () => {
         if (latLong) {
             try {
-
-                const limit = 12;
+                console.log("this sis bulshit")
+                const limit = 20;
                 const response = await fetch(`/api/getCoffeeStoresByLocation?latLong=${latLong}&limit=${limit}`);
                 const data = await response.json();
 
                 dispatch({
-                    type:ACTION_TYPES.SET_COFFEE_STORES,
-                    payload:data
+                    type: ACTION_TYPES.SET_COFFEE_STORES,
+                    payload: data
                 })
             } catch (error) {
-               setCoffeeStoresError(error.message)
+                setCoffeeStoresError(error.message)
             }
         }
+    }
+    useEffect(() => {
 
+        fetchDateAfterLocationChange();
 
-    }, [dispatch,latLong])
+    }, [dispatch, latLong])
     return (
         <div className="home-page">
             <Head>
@@ -67,14 +69,14 @@ export default function Home({coffeeStores}) {
                     locationErrorMessage && <p>Something went Wrong:{locationErrorMessage}</p>
                 }
                 {
-                    coffeeStoresError &&  <p>Something went Wrong:{coffeeStoresError}</p>
+                    coffeeStoresError && <p>Something went Wrong:{coffeeStoresError}</p>
                 }
                 <div className="hero-image">
                     <Image src={"/static/coffee.png"} width={512} height={512} alt={"hero image"}/>
                 </div>
                 {
-                    coffeeStoresFromContext.length>0 &&(
-                        <div className={"m-t-4"} >
+                    coffeeStoresFromContext.length > 0 && (
+                        <div className={"m-t-4"}>
                             <h2 className="heading-secondary ">Coffee Shops near you</h2>
                             <div className="card-layout m-t-4 ">
                                 {
