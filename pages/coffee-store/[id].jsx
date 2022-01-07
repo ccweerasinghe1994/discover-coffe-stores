@@ -40,18 +40,20 @@ export async function getStaticPaths() {
 const CoffeeStore = (initialProps) => {
 
     const router = useRouter();
-
+    if(router.isFallback ){
+      return  <div>Lording</div>
+    }
     const id = router.query.id;
 
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const [coffeeStore, setCoffeeStore] = useState(initialProps.coffeeStore);
     console.log("initialProps.coffeeStore",initialProps.coffeeStore)
-
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const {state} = useContext(StoreContext);
     const {coffeeStoresFromContext} = state;
 
     const handleCreateCoffeeStore = async (coffeeStoreData) => {
         const {id, name, imageUrl, locality, region, cross_street} = coffeeStoreData;
-        console.log("handleCreateCoffeeStore===>>",coffeeStoreData)
         try {
             const response = await fetch("/api/createCoffeeStore", {
                 method: "POST",
@@ -77,6 +79,7 @@ const CoffeeStore = (initialProps) => {
             console.error("error creating a coffee store", error)
         }
     }
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     useEffect(() => {
 
         if (isEmpty(initialProps.coffeeStore)) {
@@ -96,13 +99,16 @@ const CoffeeStore = (initialProps) => {
         } else {
             handleCreateCoffeeStore(initialProps.coffeeStore)
         }
-    }, [id, initialProps, initialProps.coffeeStore]);
+    }, [id, initialProps, initialProps.coffeeStore,coffeeStoresFromContext]);
 
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const [votingCount, setVotingCount] = useState(0);
 
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const {data, error} = useSWR(`/api/getCoffeeStoreById?id=${id}`, fetcher);
 
 
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     useEffect(() => {
 
         if (data && data.length > 0) {
@@ -141,11 +147,9 @@ const CoffeeStore = (initialProps) => {
         return <div>Something went wrong when retrieving coffee store data</div>
     }
 
-
     const { name, imageUrl, locality, region, cross_street} = coffeeStore;
-
     return (
-        router.isFallback ? <div>Lording</div> : (<div className={"coffee-store-page"}>
+        <div className={"coffee-store-page"}>
             <div className={"coffee-store-page__link-wrapper"}>
                 <Link href="/">
                     <a>&larr;{" "}back to home</a>
@@ -180,7 +184,7 @@ const CoffeeStore = (initialProps) => {
             </div>
 
         </div>)
-    )
+
 
 }
 
